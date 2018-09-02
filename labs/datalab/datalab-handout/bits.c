@@ -187,16 +187,10 @@ int bitCount(int x) {
 	int k = k1 | k1<<16;	//k = 0x0F0F0F0F
 	
 	x = (x & i) + ((x >> 1) & i);
-	printf("%x\n",x);
 	x = (x & j) + ((x >> 2) & j);
-	printf("%x\n",x);
 	x = (x + (x >> 4)) & k;
-	printf("%x\n",x);
 	x = x + (x >> 8);
-	printf("%x\n",x);
 	x = x + (x >> 16);
-	printf("%x\n",x);
-	printf("%d\n", (x&0x3F));
 	return (x & 0x3F);
 
 }
