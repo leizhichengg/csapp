@@ -175,7 +175,30 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  return 2;
+	int i1 = 0x5 | 0x5<<4;
+	int i2 = i1 | i1<<8;
+	int i = i2 | i2<<16;	//i = 0x55555555
+	
+	int j1 = 0x3 | 0x3<<4;
+	int j2 = j1 | j1<<8;
+	int j = j2 | j2<<16;	//j = 0x33333333
+	
+	int k1 = 0x0F | 0x0F<<8;
+	int k = k1 | k1<<16;	//k = 0x0F0F0F0F
+	
+	x = (x & i) + ((x >> 1) & i);
+	printf("%x\n",x);
+	x = (x & j) + ((x >> 2) & j);
+	printf("%x\n",x);
+	x = (x + (x >> 4)) & k;
+	printf("%x\n",x);
+	x = x + (x >> 8);
+	printf("%x\n",x);
+	x = x + (x >> 16);
+	printf("%x\n",x);
+	printf("%d\n", (x&0x3F));
+	return (x & 0x3F);
+
 }
 /* 
  * bang - Compute !x without using !
@@ -303,7 +326,7 @@ unsigned float_twice(unsigned uf) {
 //test
 int main()
 {
-	logicalShift(0x00876543, 4);
+	bitCount(15);
 
 	return 0;
 }
