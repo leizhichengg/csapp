@@ -202,7 +202,12 @@ int bitCount(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-  return 2;
+	x = x >> 16 | x;
+	x = x >> 8 | x;
+	x = x >> 4 | x;
+	x = x >> 2 | x;
+	x = x >> 1 | x;
+	return (~x & 0x1);
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -211,7 +216,7 @@ int bang(int x) {
  *   Rating: 1
  */
 int tmin(void) {
-  return 2;
+	return (0x1 << 31);	
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -223,7 +228,8 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  return 2;
+	int move = 32 + (~n + 1);
+	return !(x ^ ((x << move) >> move));
 }
 /* 
  * divpwr2 - Compute x/(2^n), for 0 <= n <= 30
@@ -320,7 +326,6 @@ unsigned float_twice(unsigned uf) {
 //test
 int main()
 {
-	bitCount(15);
-
+	fitsBits(-4,3);
 	return 0;
 }
