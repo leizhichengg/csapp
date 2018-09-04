@@ -12,46 +12,37 @@
  * it's not good practice to ignore compiler warnings, but in this
  * case it's OK.  
  */
-
 #if 0
 /*
  * Instructions to Students:
  *
  * STEP 1: Read the following instructions carefully.
  */
-
 You will provide your solution to the Data Lab by
 editing the collection of functions in this source file.
-
 INTEGER CODING RULES:
- 
   Replace the "return" statement in each function with one
   or more lines of C code that implements the function. Your code 
   must conform to the following style:
- 
   int Funct(arg1, arg2, ...) {
       /* brief description of how your implementation works */
       int var1 = Expr1;
       ...
       int varM = ExprM;
-
       varJ = ExprJ;
       ...
       varN = ExprN;
       return ExprR;
   }
-
   Each "Expr" is an expression using ONLY the following:
   1. Integer constants 0 through 255 (0xFF), inclusive. You are
       not allowed to use big constants such as 0xffffffff.
   2. Function arguments and local variables (no global variables).
   3. Unary integer operations ! ~
   4. Binary integer operations & ^ | + << >>
-    
   Some of the problems restrict the set of allowed operators even further.
   Each "Expr" may consist of multiple operators. You are not restricted to
   one operator per line.
-
   You are expressly forbidden to:
   1. Use any control constructs such as if, do, while, for, switch, etc.
   2. Define or use any macros.
@@ -61,14 +52,11 @@ INTEGER CODING RULES:
   6. Use any form of casting.
   7. Use any data type other than int.  This implies that you
      cannot use arrays, structs, or unions.
-
- 
   You may assume that your machine:
   1. Uses 2s complement, 32-bit representations of integers.
   2. Performs right shifts arithmetically.
   3. Has unpredictable behavior when shifting an integer by more
      than the word size.
-
 EXAMPLES OF ACCEPTABLE CODING STYLE:
   /*
    * pow2plus1 - returns 2^x + 1, where 0 <= x <= 31
@@ -77,7 +65,6 @@ EXAMPLES OF ACCEPTABLE CODING STYLE:
      /* exploit ability of shifts to compute powers of 2 */
      return (1 << x) + 1;
   }
-
   /*
    * pow2plus4 - returns 2^x + 4, where 0 <= x <= 31
    */
@@ -87,14 +74,11 @@ EXAMPLES OF ACCEPTABLE CODING STYLE:
      result += 4;
      return result;
   }
-
 FLOATING POINT CODING RULES
-
 For the problems that require you to implent floating-point operations,
 the coding rules are less strict.  You are allowed to use looping and
 conditional control.  You are allowed to use both ints and unsigneds.
 You can use arbitrary integer and unsigned constants.
-
 You are expressly forbidden to:
   1. Define or use any macros.
   2. Define any additional functions in this file.
@@ -103,8 +87,6 @@ You are expressly forbidden to:
   5. Use any data type other than int or unsigned.  This means that you
      cannot use arrays, structs, or unions.
   6. Use any floating point data types, operations, or constants.
-
-
 NOTES:
   1. Use the dlc (data lab checker) compiler (described in the handout) to 
      check the legality of your solutions.
@@ -118,7 +100,6 @@ NOTES:
      header comment for each function. If there are any inconsistencies 
      between the maximum ops in the writeup and in this file, consider
      this file the authoritative source.
-
 /*
  * STEP 2: Modify the following functions according the coding rules.
  * 
@@ -128,8 +109,6 @@ NOTES:
  *   2. Use the BDD checker to formally verify that your solutions produce 
  *      the correct answers.
  */
-
-
 #endif
 /* 
  * bitAnd - x&y using only ~ and | 
@@ -178,21 +157,17 @@ int bitCount(int x) {
 	int i1 = 0x5 | 0x5<<4;
 	int i2 = i1 | i1<<8;
 	int i = i2 | i2<<16;	//i = 0x55555555
-	
 	int j1 = 0x3 | 0x3<<4;
 	int j2 = j1 | j1<<8;
 	int j = j2 | j2<<16;	//j = 0x33333333
-	
 	int k1 = 0x0F | 0x0F<<8;
 	int k = k1 | k1<<16;	//k = 0x0F0F0F0F
-	
 	x = (x & i) + ((x >> 1) & i);
 	x = (x & j) + ((x >> 2) & j);
 	x = (x + (x >> 4)) & k;
 	x = x + (x >> 8);
 	x = x + (x >> 16);
 	return (x & 0x3F);
-
 }
 /* 
  * bang - Compute !x without using !
@@ -251,7 +226,7 @@ int divpwr2(int x, int n) {
  *   Rating: 2
  */
 int negate(int x) {
-  return (~x + 1);
+	return (~x + 1);
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
@@ -261,7 +236,8 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-  return 2;
+	printf("%d\n", !(!(x & ~(x >> 31))));
+	return !(!(x & ~(x >> 31)));
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -323,11 +299,9 @@ unsigned float_i2f(int x) {
 unsigned float_twice(unsigned uf) {
   return 2;
 }
-
 //test
 int main()
 {
-
-
+	isPositive(0);
 	return 0;
 }
