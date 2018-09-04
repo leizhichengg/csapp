@@ -236,7 +236,6 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-	printf("%d\n", !(!(x & ~(x >> 31))));
 	return !(!(x & ~(x >> 31)));
 }
 /* 
@@ -247,7 +246,10 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+	int temp = !((y + ~x) >> 31);
+	x = !(x >> 31);
+	y = !(y >> 31);
+	return (!x | y) & ((!x & y) | temp);
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
@@ -302,6 +304,5 @@ unsigned float_twice(unsigned uf) {
 //test
 int main()
 {
-	isPositive(0);
 	return 0;
 }
