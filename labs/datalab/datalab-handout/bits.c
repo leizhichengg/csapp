@@ -246,7 +246,7 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-	int temp = !((y + ~x) >> 31);
+	int temp = !((y + ~x + 1) >> 31);
 	x = !(x >> 31);
 	y = !(y >> 31);
 	return (!x | y) & ((!x & y) | temp);
@@ -304,5 +304,6 @@ unsigned float_twice(unsigned uf) {
 //test
 int main()
 {
+	isLessOrEqual(-7,-8);
 	return 0;
 }
