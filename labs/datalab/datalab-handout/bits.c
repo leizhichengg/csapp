@@ -259,7 +259,30 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
-  return 2;
+	int i1 = 0x5 | 0x5<<4;
+	int i2 = i1 | i1<<8;
+	int i = i2 | i2<<16;	//i = 0x55555555
+	int j1 = 0x3 | 0x3<<4;
+	int j2 = j1 | j1<<8;
+	int j = j2 | j2<<16;	//j = 0x33333333
+	int k1 = 0x0F | 0x0F<<8;
+	int k = k1 | k1<<16;	//k = 0x0F0F0F0F
+	
+	//set all 1 from the highest bit of 1 to the end
+	x = x | (x >> 1);
+	x = x | (x >> 2);
+	x = x | (x >> 4);
+	x = x | (x >> 8);
+	x = x | (x >> 16);
+
+	//count of 1
+	x = (x & i) + ((x >> 1) & i);
+	x = (x & j) + ((x >> 2) & j);
+	x = (x + (x >> 4)) & k;
+	x = x + (x >> 8);
+	x = x + (x >> 16);
+
+	return ((x & 0x3F) + ~0);
 }
 /* 
  * float_neg - Return bit-level equivalent of expression -f for
@@ -304,6 +327,6 @@ unsigned float_twice(unsigned uf) {
 //test
 int main()
 {
-	isLessOrEqual(-7,-8);
+	ilog2(16);	
 	return 0;
 }
