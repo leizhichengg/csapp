@@ -327,8 +327,3 @@ unsigned float_i2f(int x) {
 unsigned float_twice(unsigned uf) {
   return 2;
 }
-//test
-int main()
-{
-	return 0;
-}
