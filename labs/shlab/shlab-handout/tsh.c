@@ -165,7 +165,49 @@ int main(int argc, char **argv)
 */
 void eval(char *cmdline) 
 {
-    return;
+    char *argv[MAXARGS];
+	char buf[MAXLINE];
+	int bg;
+	pid_t pid;
+	sigset_t mask, prev_mask;
+
+	strcpy(buf, cmdline);
+	bg = parseline(buf, argv);
+	if(argv[0] == NULL)
+		return;
+	
+	sigemptyset(&mask);
+	sigaddset(&mask, SIGCHLD);
+
+	if(!builtin_cmd(argv))
+	{
+		sigprocmask(SIG_BLOCK, &mask, &prev_mask);	//Block SIGCHLD
+		if((pid == fork()) == 0)
+		{
+			sigprocmask(SIG_SETMASK, &prev_mask, NULL);	//Unblock SIGCHLD
+			if(setpgid(0, 0) < 0)
+				unix_error("setpid: setpid error");
+			if(execve(argv[0], argv, environ) < 0)
+			{
+				printf("%s: Command not fond.\n", argv[0]);
+				exit(0);
+			}
+		}
+	
+	if(bg)
+		addjob(jobs, pid, BG, cmdline);
+	else
+		addjob(jobs, pid ,FG, cmdline);
+	
+	sigprocmask(SIG_SETMASK, &prev_mask, NULL);	//Unblock SIGCHLD
+	
+	if(!bg)
+		waitfg(pid);
+	else
+		printf("[%d] (%d) %s", pid2jid(pid), pid, cmdline);
+	}
+
+	return;
 }
 
 /* 
@@ -231,7 +273,21 @@ int parseline(const char *cmdline, char **argv)
  */
 int builtin_cmd(char **argv) 
 {
-    return 0;     /* not a builtin command */
+    if(!strcmp(argv[0], "quit"))
+		exit(0);
+	if(!strcmp(argv[0], "&"))
+		return 1;
+	if(!strcmp(argv[0], "jobs"))
+	{
+		listjobs(jobs);
+		return 1;
+	}
+	if(!strcmp(argv[0], "bg") || !strcmp(argv[0], "fg"))
+	{
+		do_bgfg(argv);
+		return 1;
+	}
+	return 0;     /* not a builtin command */
 }
 
 /* 
